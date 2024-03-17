@@ -9,12 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAddress {
-    private String address1;
-    private String address2;
-    private String city;
-    private String state;
-    private String postalCode;
+public class UserPasswordUpdate {
 
-    private String country;
+    private String userName;
+    private String oldPassword;
+    private String newPassword;
 }

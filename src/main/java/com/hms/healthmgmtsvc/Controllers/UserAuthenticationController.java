@@ -1,6 +1,7 @@
 package com.hms.healthmgmtsvc.Controllers;
 
 import com.hms.healthmgmtsvc.DTO.UserInfo;
+import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
 import com.hms.healthmgmtsvc.Services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,19 @@ public class UserAuthenticationController {
         this.userInfoService = userInfoService;
     }
 
-    @GetMapping("/{userId}")
-    public String getUser(@PathVariable String userId){
-        return userInfoService.getUserDetails(userId);
+    @GetMapping("/{userName}")
+    public UserInfo getUser(@PathVariable String userName){
+        return userInfoService.getUserDetails(userName);
     }
 
     @PostMapping("/register")
     public String registerUser(@RequestBody UserInfo userInfo){
+
         return userInfoService.registerUser(userInfo);
+    }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(@RequestBody UserPasswordUpdate userPasswordDetails){
+        return userInfoService.updatePassword(userPasswordDetails);
     }
 }
