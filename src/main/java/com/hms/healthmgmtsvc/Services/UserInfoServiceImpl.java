@@ -5,9 +5,19 @@ import com.hms.healthmgmtsvc.DTO.UserInfo;
 import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
 import com.hms.healthmgmtsvc.Repositories.Users;
 import com.hms.healthmgmtsvc.Repositories.UserRepository;
+import com.hms.healthmgmtsvc.Utilities.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -15,22 +25,24 @@ import java.util.Optional;
 public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserInfoServiceImpl(UserRepository userRepository){
+    public UserInfoServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
-    }
-
-    @Override
-    public void authenticateUser(String userId, String password) {
-
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public String registerUser(UserInfo userInfo) {
-
+        if (isUserValid(userInfo.getUserName())) return "Username already Exists. Cannot Register.";
         Users users = new Users(
                 userInfo.getUserName(),
-                userInfo.getPassword(),
+                passwordEncoder.encode(userInfo.getPassword()),
                 userInfo.getFirstName(),
                 userInfo.getLastName(),
                 userInfo.getEmail(),
@@ -50,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         Optional<Users> users = userRepository.findById(userName);
         UserInfo userInfo = new UserInfo();
 
-        if (!users.isEmpty()){
+        if (users.isPresent()){
             userInfo = new UserInfo(
                     users.get().getFirstName(),
                     users.get().getLastName(),
@@ -75,20 +87,50 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public String updatePassword(UserPasswordUpdate userPasswordUpdate){
+
+        if (!isUserValid(userPasswordUpdate.getUserName())) return "User not found.";
+
         Optional<Users> users = userRepository.findById(userPasswordUpdate.getUserName());
-        if (users.isEmpty()){
-            return "User not found";
+
+        if (authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userPasswordUpdate.getUserName(),userPasswordUpdate.getOldPassword()))
+                .isAuthenticated()){
+            Users user = users.get();
+            user.setPassword(passwordEncoder.encode(userPasswordUpdate.getNewPassword()));
+            userRepository.save(user);
         }
-        else{
-            if (userPasswordUpdate.getOldPassword().equals(users.get().getPassword())){
-                Users user = users.get();
-                user.setPassword(userPasswordUpdate.getNewPassword());
-                userRepository.save(user);
-            }
-            else {
-                return "Cannot update password.";
-            }
+        else {
+            return "Cannot update password.";
         }
         return "Updated Succcessfully.";
+    }
+
+    @Override
+    public String userLogin(UserInfo userInfo) {
+        if (!isUserValid(userInfo.getUserName())) return "User not found.";
+
+        Optional<Users> users = userRepository.findById(userInfo.getUserName());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("User"));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userInfo.getUserName(),  userInfo.getPassword(), authorities));
+        if(authentication.isAuthenticated()){
+            return jwtService.GenerateToken(users.get().getUserName());
+        } else {
+            throw new UsernameNotFoundException("invalid user request..!!");
+        }
+    }
+
+    /**
+    Helper method to check whether userId is valid
+     */
+    private boolean isUserValid(String userId) {
+
+        Optional<Users> users = userRepository.findById(userId);
+        return users.isPresent();
+    }
+
+    private String encryptPassword(String password){
+        return null;
     }
 }
