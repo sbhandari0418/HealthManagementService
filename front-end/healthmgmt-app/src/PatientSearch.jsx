@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import PatientData from './PatientData';
+import ObservationData from './ObservationData';
 
 function PatientSearch() {
     const [patientId, setPatientId] = useState('');
-    const [fetchPatient, setFetchPatient] = useState(false);
+    const [fetchData, setFetchData] = useState(false);
 
     const handleSearch = () => {
-        if (patientId) {
-            setFetchPatient(true);
+        if (patientId.trim()) { // Checks if the input is not just empty spaces
+            setFetchData(true); // Triggers the rendering of PatientData and ObservationData components
         }
     };
 
@@ -20,7 +21,13 @@ function PatientSearch() {
                 onChange={(e) => setPatientId(e.target.value)}
             />
             <button onClick={handleSearch}>Search</button>
-            {fetchPatient && <PatientData patientId={patientId} />}
+            {/* Now fetchData triggers both components' rendering */}
+            {fetchData && (
+                <>
+                    <PatientData patientId={patientId} />
+                    <ObservationData patientId={patientId} />
+                </>
+            )}
         </div>
     );
 }
