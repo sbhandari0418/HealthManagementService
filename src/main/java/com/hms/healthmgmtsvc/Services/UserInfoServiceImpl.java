@@ -1,5 +1,6 @@
 package com.hms.healthmgmtsvc.Services;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.hms.healthmgmtsvc.DTO.UserAddress;
 import com.hms.healthmgmtsvc.DTO.UserInfo;
 import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
@@ -16,10 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -106,7 +104,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public String userLogin(UserInfo userInfo) {
+    public Object userLogin(UserInfo userInfo) {
         if (!isUserValid(userInfo.getUserName())) return "User not found.";
 
         Optional<Users> users = userRepository.findById(userInfo.getUserName());
@@ -115,7 +113,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userInfo.getUserName(),  userInfo.getPassword(), authorities));
         if(authentication.isAuthenticated()){
-            return jwtService.GenerateToken(users.get().getUserName());
+            String token = jwtService.GenerateToken(users.get().getUserName());
+            return token;
+
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");
         }

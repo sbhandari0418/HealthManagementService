@@ -4,7 +4,11 @@ import com.hms.healthmgmtsvc.DTO.UserInfo;
 import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
 import com.hms.healthmgmtsvc.Services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @CrossOrigin
@@ -34,7 +38,7 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("login")
-    public String userLogin(@RequestBody UserInfo userInfo){
-        return userInfoService.userLogin(userInfo);
+    public ResponseEntity<Object> userLogin(@RequestBody UserInfo userInfo){
+        return ResponseEntity.ok(userInfoService.userLogin(userInfo));
     }
 }
