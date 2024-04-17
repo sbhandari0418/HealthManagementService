@@ -13,6 +13,7 @@ const Signup = () => {
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [postalCode, setPostalCode] = useState("");
+    const [patientId, setPatientId] = useState("");
     const navigate = useNavigate();
 
     const postSignUpDetails = () => {
@@ -32,6 +33,7 @@ const Signup = () => {
                     city,
                     postalCode
                 },
+                patientId,
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -63,6 +65,7 @@ const Signup = () => {
         setAddr2("");
         setState("");
         setPostalCode("");
+        setPatientId("");
     };
     const gotoLoginPage = () => navigate("/");
 
@@ -141,7 +144,15 @@ const Signup = () => {
                     required
                     onChange={(e) => setDOB(e.target.value)}
                 />
-
+                <label htmlFor='patientId'>FHIR Patient Id</label>
+                <input
+                    type='text'
+                    id='patientId'
+                    name='patientId'
+                    value={patientId}
+                    required
+                    onChange={(e) => setPatientId(e.target.value)}
+                />
 
                 <label htmlFor='email'>Email Address</label>
                 <input
