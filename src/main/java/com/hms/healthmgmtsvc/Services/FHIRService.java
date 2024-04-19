@@ -43,7 +43,9 @@ public class FHIRService implements IFHIRService {
     }
 
     public List<HealthTrendDTO> getObservationData(String username){
-
+        // healthmanagementportal.database.windows.net
+        // sqlserver
+        // collegeproject-11
         try {
             String patientId = getPatientIdByUsername(username);
             var client = HttpClient.newHttpClient();
