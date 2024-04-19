@@ -27,6 +27,7 @@ public class Users {
     private String state;
     private String postalCode;
     private Date dob;
+    private String patientId;
 
 
 

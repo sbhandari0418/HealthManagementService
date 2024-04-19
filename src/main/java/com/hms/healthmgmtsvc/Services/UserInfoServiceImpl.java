@@ -26,18 +26,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final IFHIRService fhirService;
 
     @Autowired
-    public UserInfoServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder){
+    public UserInfoServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, IFHIRService fhirService){
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.fhirService = fhirService;
     }
 
     @Override
     public String registerUser(UserInfo userInfo) {
         if (isUserValid(userInfo.getUserName())) return "Username already Exists. Cannot Register.";
+        Map<String, Object> patientData = fhirService.getPatientDataByPatientId(userInfo.getPatientId());
+        if (patientData == null || Integer.parseInt(patientData.get("total").toString()) == 0) return "PatientId invalid";
         Users users = new Users(
                 userInfo.getUserName(),
                 passwordEncoder.encode(userInfo.getPassword()),
@@ -49,7 +53,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userInfo.getAddress().getCity(),
                 userInfo.getAddress().getState(),
                 userInfo.getAddress().getPostalCode(),
-                userInfo.getDob());
+                userInfo.getDob(),
+                userInfo.getPatientId());
 
         userRepository.save(users);
         return "Successfully registered.";
@@ -75,7 +80,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                             null
                     ),
                     null,
-                    users.get().getDob()
+                    users.get().getDob(),
+                    null
             );
         }
 
