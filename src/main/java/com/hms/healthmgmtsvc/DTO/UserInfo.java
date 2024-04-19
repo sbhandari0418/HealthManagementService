@@ -17,6 +17,7 @@ public class UserInfo {
     private UserAddress address;
     private String password;
     private Date dob;
+    private String patientId;
 
 
 }
