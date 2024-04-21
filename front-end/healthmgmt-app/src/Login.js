@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Import your CSS file for styling
 
 const Login = () => {
-    const [userName, setuserName] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // Check if token is present in localStorage
+        const token = localStorage.getItem("token");
+        if (token) {
+            // If token is present, redirect user to dashboard
+            navigate("/dashboard");
+        }
+    }, [navigate]);
+
     const postLoginDetails = () => {
-        fetch("http://localhost:8081/api/hms/user/login", {
+        fetch("/api/hms/user/login", {
             method: "POST",
             body: JSON.stringify({
                 userName,
@@ -17,56 +27,59 @@ const Login = () => {
                 "Content-Type": "application/json",
             },
         })
-            .then((data) => {
-                if (data.error_message) {
-                    alert(data.error_message);
-                } else {
-                    data.text().then((a) => {
-                        localStorage.setItem("token", a.toString());
-                    });
-                    window.location.replace("/dashboard");
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Login failed."); // Throw an error for non-successful responses
                 }
+                return response.text();
             })
-            .catch((err) => console.error(err));
+            .then((token) => {
+                localStorage.setItem("token", token);
+                navigate("/dashboard");
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Login failed. Please try again."); // Display an error message for the user
+            });
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         postLoginDetails();
         setPassword("");
-        setuserName("");
+        setUserName("");
     };
 
     const gotoSignUpPage = () => navigate("/register");
 
     return (
-        <div className='login__container'>
-            <h2>Login </h2>
-            <form className='login__form' onSubmit={handleSubmit}>
-                <label htmlFor='userName'>userName</label>
+        <div className="login__container">
+            <h2>Login</h2>
+            <form className="login__form" onSubmit={handleSubmit}>
+                <label htmlFor="userName">Username</label>
                 <input
-                    type='text'
-                    id='userName'
-                    name='userName'
+                    type="text"
+                    id="userName"
+                    name="userName"
                     value={userName}
                     required
-                    onChange={(e) => setuserName(e.target.value)}
+                    onChange={(e) => setUserName(e.target.value)}
                 />
-                <label htmlFor='password'>Password</label>
+                <label htmlFor="password">Password</label>
                 <input
-                    type='password'
-                    name='password'
-                    id='password'
-                    minLength={8}
+                    type="password"
+                    name="password"
+                    id="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className='loginBtn'>SIGN IN</button>
+                <button className="loginBtn">Sign In</button>
                 <p>
                     Don't have an account?{" "}
-                    <span className='link' onClick={gotoSignUpPage}>
-						Sign up
-					</span>
+                    <span className="link" onClick={gotoSignUpPage}>
+                        Sign up
+                    </span>
                 </p>
             </form>
         </div>

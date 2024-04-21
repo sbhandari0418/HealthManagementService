@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Signup.css"; // Import your CSS file for styling
 
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -7,7 +8,7 @@ const Signup = () => {
     const [lastName, setLastName] = useState("");
     const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [dob, setDOB] = useState(Date.now);
+    const [dob, setDOB] = useState("");
     const [address1, setAddr1] = useState("");
     const [address2, setAddr2] = useState("");
     const [state, setState] = useState("");
@@ -17,7 +18,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const postSignUpDetails = () => {
-        fetch("http://localhost:8081/api/hms/user/register", {
+        fetch("/api/hms/user/register", {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -26,7 +27,7 @@ const Signup = () => {
                 firstName,
                 lastName,
                 dob,
-                address : {
+                address: {
                     address1,
                     address2,
                     state,
@@ -59,7 +60,7 @@ const Signup = () => {
         setPassword("");
         setFirstName("");
         setLastName("");
-        setDOB(Date.now);
+        setDOB("");
         setCity("");
         setAddr1("");
         setAddr2("");
@@ -67,127 +68,128 @@ const Signup = () => {
         setPostalCode("");
         setPatientId("");
     };
+
     const gotoLoginPage = () => navigate("/");
 
     return (
-        <div className='signup__container'>
-            <h2>Sign up </h2>
-            <form className='signup__form' onSubmit={handleSubmit}>
-                <label htmlFor='firstName'>First Name</label>
+        <div className="signup__container">
+            <h2>Sign up</h2>
+            <form className="signup__form" onSubmit={handleSubmit}>
+                <label htmlFor="firstName">First Name</label>
                 <input
-                    type='firstName'
-                    name='firstName'
-                    id='firstName'
+                    type="text"
+                    name="firstName"
+                    id="firstName"
                     value={firstName}
                     required
                     onChange={(e) => setFirstName(e.target.value)}
                 />
-                <label htmlFor='lastName'>Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input
-                    type='lastName'
-                    name='lastName'
-                    id='lastName'
+                    type="text"
+                    name="lastName"
+                    id="lastName"
                     value={lastName}
                     required
                     onChange={(e) => setLastName(e.target.value)}
                 />
-                <label htmlFor='address1'>Address1</label>
+                <label htmlFor="address1">Address1</label>
                 <input
-                    type='address1'
-                    name='address1'
-                    id='address1'
+                    type="text"
+                    name="address1"
+                    id="address1"
                     value={address1}
                     required
                     onChange={(e) => setAddr1(e.target.value)}
                 />
-                <label htmlFor='address2'>Address2</label>
+                <label htmlFor="address2">Address2</label>
                 <input
-                    type='address2'
-                    name='address2'
-                    id='address2'
+                    type="text"
+                    name="address2"
+                    id="address2"
                     value={address2}
                     onChange={(e) => setAddr2(e.target.value)}
                 />
-                <label htmlFor='city'>City</label>
+                <label htmlFor="city">City</label>
                 <input
-                    type='city'
-                    name='city'
-                    id='city'
+                    type="text"
+                    name="city"
+                    id="city"
                     value={city}
                     required
                     onChange={(e) => setCity(e.target.value)}
                 />
-                <label htmlFor='state'>State</label>
+                <label htmlFor="state">State</label>
                 <input
-                    type='state'
-                    name='state'
-                    id='state'
+                    type="text"
+                    name="state"
+                    id="state"
                     value={state}
                     required
                     onChange={(e) => setState(e.target.value)}
                 />
-                <label htmlFor='postalCode'>Postal Code</label>
+                <label htmlFor="postalCode">Postal Code</label>
                 <input
-                    type='postalCode'
-                    name='postalCode'
-                    id='postalCode'
+                    type="text"
+                    name="postalCode"
+                    id="postalCode"
                     value={postalCode}
                     required
                     onChange={(e) => setPostalCode(e.target.value)}
                 />
-                <label htmlFor='dob'>Date of birth</label>
+                <label htmlFor="dob">Date of birth</label>
                 <input
-                    name='dob'
-                    id='dob'
-                    value={dob}
                     type="date"
+                    name="dob"
+                    id="dob"
+                    value={dob}
                     required
                     onChange={(e) => setDOB(e.target.value)}
                 />
-                <label htmlFor='patientId'>FHIR Patient Id</label>
+                <label htmlFor="patientId">FHIR Patient Id</label>
                 <input
-                    type='text'
-                    id='patientId'
-                    name='patientId'
+                    type="text"
+                    id="patientId"
+                    name="patientId"
                     value={patientId}
                     required
                     onChange={(e) => setPatientId(e.target.value)}
                 />
 
-                <label htmlFor='email'>Email Address</label>
+                <label htmlFor="email">Email Address</label>
                 <input
-                    type='email'
-                    name='email'
-                    id='email'
+                    type="email"
+                    name="email"
+                    id="email"
                     value={email}
                     required
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <label htmlFor='userName'>Username</label>
+                <label htmlFor="userName">Username</label>
                 <input
-                    type='text'
-                    id='userName'
-                    name='userName'
+                    type="text"
+                    id="userName"
+                    name="userName"
                     value={userName}
                     required
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <label htmlFor='password'>Password</label>
+                <label htmlFor="password">Password</label>
                 <input
-                    type='password'
-                    name='password'
-                    id='password'
+                    type="password"
+                    name="password"
+                    id="password"
                     minLength={8}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className='signupBtn'>SIGN UP</button>
+                <button className="signupBtn">Sign Up</button>
                 <p>
                     Already have an account?{" "}
-                    <span className='link' onClick={gotoLoginPage}>
-						Login
-					</span>
+                    <span className="link" onClick={gotoLoginPage}>
+                        Login
+                    </span>
                 </p>
             </form>
         </div>

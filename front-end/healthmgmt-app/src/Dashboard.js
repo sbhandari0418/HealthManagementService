@@ -1,26 +1,64 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Component } from "react";
+import HealthTracking from "./HealthTracking";
 
-const Dashboard = () => {
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const checkUser = () => {
-            if (!localStorage.getItem("token")) {
-                navigate("/");
-            }
+class Dashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            healthData: null
         };
-        checkUser();
-    }, [navigate]);
+    }
+
+    componentDidMount() {
+        this.checkToken();
+        this.getHealthDetails();
+    }
+
+    checkToken() {
+        if (!localStorage.getItem("token")) {
+            this.props.history.push("/");
+        }
+    }
+
+    getHealthDetails() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            this.props.history.push("/");
+            return; // Exit function early if token is not available
+        }
+
+        fetch("/api/hms/fhir/patientHealthData", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Attach token to Authorization header
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error_message) {
+                    alert(data.error_message);
+                } else {
+                    this.setState({ healthData: data });
+                    console.log(data);
+                }
+            })
+            .catch((err) => console.error(err));
+    }
 
 
-    return (
-        <div className='dashboard'>
-            <h2 style={{ marginBottom: "30px" }}>
-                Howdy, Test
-            </h2>
-        </div>
-    );
-};
+    render() {
+        return (
+            <div className='dashboard'>
+                <h2 style={{marginBottom: "30px"}}>
+                    {this.state.healthData ? (
+                        <HealthTracking data={this.state.healthData}/>
+                    ) : null}
+                </h2>
+            </div>
+
+        );
+    }
+}
 
 export default Dashboard;

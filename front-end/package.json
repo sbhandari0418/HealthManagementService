@@ -5,6 +5,8 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.2",
+    "http-proxy-middleware": "^3.0.0",
     "react-bootstrap": "^2.10.2"
   }
 }

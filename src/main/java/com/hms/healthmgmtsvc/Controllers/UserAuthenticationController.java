@@ -1,17 +1,20 @@
 package com.hms.healthmgmtsvc.Controllers;
 
+import com.hms.healthmgmtsvc.DTO.PatientDTO;
 import com.hms.healthmgmtsvc.DTO.UserInfo;
 import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
 import com.hms.healthmgmtsvc.Services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/hms/user")
 public class UserAuthenticationController {
 
@@ -22,9 +25,10 @@ public class UserAuthenticationController {
         this.userInfoService = userInfoService;
     }
 
-    @GetMapping("{userName}")
-    public UserInfo getUser(@PathVariable String userName){
-        return userInfoService.getUserDetails(userName);
+    @GetMapping
+    public PatientDTO getUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userInfoService.getUserDetails(authentication.getName());
     }
 
     @PostMapping("register")
@@ -34,6 +38,8 @@ public class UserAuthenticationController {
 
     @PostMapping("updatePassword")
     public String updatePassword(@RequestBody UserPasswordUpdate userPasswordDetails){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userPasswordDetails.setUserName(authentication.getName());
         return userInfoService.updatePassword(userPasswordDetails);
     }
 
