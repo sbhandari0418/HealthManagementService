@@ -1,0 +1,92 @@
+.food-intake-container {
+    margin-top: 20px;
+}
+
+.add-food-intake {
+    cursor: pointer;
+    margin-bottom: 15px;
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.add-food-intake:hover {
+    color: #0056b3;
+}
+
+.add-food-intake-content {
+    display: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.add-food-intake-content.show {
+    display: block;
+}
+
+.form-container {
+    padding: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.form-submit {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.form-submit:hover {
+    background-color: #0056b3;
+}
+
+.food-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.food-item {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.down-arrow {
+    margin-left: auto;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.add-food-intake-content.show .down-arrow {
+    transform: rotate(180deg);
+}
+
+.calorie-upload-message {
+    color: red; /* Change the color to red */
+    font-size: 18px; /* Increase font size */
+    font-weight: bold; /* Make it bold */
+    margin-top: 20px; /* Add some top margin for separation */
+}

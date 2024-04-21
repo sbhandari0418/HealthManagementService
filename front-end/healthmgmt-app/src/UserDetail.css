@@ -1,0 +1,25 @@
+.user-detail-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    margin-top: 15px;
+}
+
+.user-info div {
+    margin-bottom: 10px;
+}
+
+.user-info strong {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.user-info div:last-child {
+    margin-bottom: 0;
+}

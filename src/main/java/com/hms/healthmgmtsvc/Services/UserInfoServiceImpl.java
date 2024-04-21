@@ -1,6 +1,7 @@
 package com.hms.healthmgmtsvc.Services;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.hms.healthmgmtsvc.DTO.PatientDTO;
 import com.hms.healthmgmtsvc.DTO.UserAddress;
 import com.hms.healthmgmtsvc.DTO.UserInfo;
 import com.hms.healthmgmtsvc.DTO.UserPasswordUpdate;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -29,7 +31,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final IFHIRService fhirService;
 
     @Autowired
-    public UserInfoServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, IFHIRService fhirService){
+    public UserInfoServiceImpl(
+            UserRepository userRepository,
+            AuthenticationManager authenticationManager,
+            JwtService jwtService,
+            PasswordEncoder passwordEncoder,
+            IFHIRService fhirService){
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -61,12 +68,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo getUserDetails(String userName){
+    public PatientDTO getUserDetails(String userName){
         Optional<Users> users = userRepository.findById(userName);
-        UserInfo userInfo = new UserInfo();
+        PatientDTO patientDTO = new PatientDTO();
+
 
         if (users.isPresent()){
-            userInfo = new UserInfo(
+            patientDTO = new PatientDTO(
                     users.get().getFirstName(),
                     users.get().getLastName(),
                     users.get().getEmail(),
@@ -79,13 +87,18 @@ public class UserInfoServiceImpl implements UserInfoService {
                             users.get().getPostalCode(),
                             null
                     ),
-                    null,
                     users.get().getDob(),
+                    users.get().getPatientId(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
                     null
+
             );
         }
-
-        return userInfo;
+        return patientDTO;
     }
 
 

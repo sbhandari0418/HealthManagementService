@@ -1,0 +1,141 @@
+.health-tracking-container {
+    display: flex;
+}
+
+.sidebar {
+    flex: 0 0 250px; /* Fixed width sidebar */
+    background-color: #fafafa;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+.category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category-list li {
+    margin-bottom: 10px;
+}
+
+.category-list button {
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    color: #666;
+    transition: background-color 0.3s ease;
+}
+
+.category-list button:hover {
+    background-color: #f0f0f0;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+/*.content {*/
+/*    margin-left: 200px; !* Adjust margin-left to match the width of the sidebar *!*/
+/*    padding: 20px; !* Add padding to create space for the sidebar *!*/
+/*}*/
+
+
+.category-data {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-data h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.category-data ul {
+    padding: 0;
+}
+
+.category-data li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* HealthTracking.css */
+
+.health-tracking-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.sidebar {
+    flex: 0 0 20%;
+}
+
+.sidebar-title {
+    margin-bottom: 10px;
+}
+
+.category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category-list li {
+    margin-bottom: 5px;
+}
+
+.category-list button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.content {
+    flex: 0 0 75%;
+}
+
+.category-data {
+    margin-top: 20px;
+}
+
+.category-data h2 {
+    margin-bottom: 10px;
+}
+
+.category-data ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category-data ul li {
+    margin-bottom: 5px;
+}
+
+/* Styling for charts */
+canvas {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+

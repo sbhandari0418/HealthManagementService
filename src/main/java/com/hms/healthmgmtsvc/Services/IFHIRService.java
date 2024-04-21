@@ -11,5 +11,7 @@ public interface IFHIRService {
 
     Map<String, Object> getPatientDataByPatientId(String patientId);
 
+    Map<String, Object> getObservationRawData(String username);
+
     List<HealthTrendDTO> getObservationData(String username);
 }

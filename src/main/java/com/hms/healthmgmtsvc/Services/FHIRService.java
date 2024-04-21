@@ -51,7 +51,7 @@ public class FHIRService implements IFHIRService {
             var client = HttpClient.newHttpClient();
 
             var request = HttpRequest.newBuilder(
-                            URI.create(BASEURL+"/Observation" + "?patient=" + patientId))
+                            URI.create(BASEURL+"/Observation" + "?patient=" + patientId +"&_count=500"))
                     .header("accept", "application/json")
                     .GET()
                     .build();
@@ -85,6 +85,32 @@ public class FHIRService implements IFHIRService {
             Map<String, Object> result = new ObjectMapper().readValue(responseFuture.get().body(), HashMap.class);
 
             return result;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public Map<String, Object> getObservationRawData(String username) {
+        try {
+            String patientId = getPatientIdByUsername(username);
+            var client = HttpClient.newHttpClient();
+
+            var request = HttpRequest.newBuilder(
+                            URI.create(BASEURL+"/Observation" + "?patient=" + patientId +"&_count=500"))
+                    .header("accept", "application/json")
+                    .GET()
+                    .build();
+
+            var responseFuture = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+            Map<String, Object> result = new ObjectMapper().readValue(responseFuture.get().body(), HashMap.class);
+
+            int entrySize = ((ArrayList)result.get("entry")).size();
+
+            Map<String, Object> flattenedJsonMap = JsonFlattener.flattenAsMap(responseFuture.get().body());
+            return flattenedJsonMap;
         }
         catch (Exception e){
             return null;
@@ -131,8 +157,12 @@ public class FHIRService implements IFHIRService {
                 bloodGlucoseDTOS.add(bloodGlucoseDTO);
             }
         }
-        healthTrendDTOS.add(new HealthTrendDTO(HealthTrackingCategory.BloodPressure, bloodPressureDTOS));
-        healthTrendDTOS.add(new HealthTrendDTO(HealthTrackingCategory.BloodGlucose, bloodGlucoseDTOS));
+        if (!bloodPressureDTOS.isEmpty()) {
+            healthTrendDTOS.add(new HealthTrendDTO(HealthTrackingCategory.BloodPressure, bloodPressureDTOS));
+        }
+        if (!bloodGlucoseDTOS.isEmpty()) {
+            healthTrendDTOS.add(new HealthTrendDTO(HealthTrackingCategory.BloodGlucose, bloodGlucoseDTOS));
+        }
         return healthTrendDTOS;
     }
 }
