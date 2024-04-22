@@ -18,7 +18,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const postSignUpDetails = () => {
-        fetch("/api/hms/user/register", {
+        fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/user/register", {
             method: "POST",
             body: JSON.stringify({
                 email,
