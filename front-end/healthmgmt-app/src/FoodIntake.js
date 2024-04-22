@@ -27,7 +27,7 @@ const FoodIntake = () => {
             return;
         }
         try {
-            const response = await fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/food", {
+            const response = await fetch("/api/hms/food", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const FoodIntake = () => {
         }
         try {
             const response = await fetch(
-                `https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/food/tracker/${foodName}/${calories}/${date}`,
+                `/api/hms/food/tracker/${foodName}/${calories}/${date}`,
                 {
                     method: "POST",
                     headers: {
