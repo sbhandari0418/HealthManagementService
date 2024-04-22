@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io",
+    "changeOrigin": true
+  }
+}
