@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000", "https://zealous-mushroom-0c05d8a0f.5.azurestaticapps.net/"})
 @RequestMapping("/api/hms/food")
 public class FoodController {
 

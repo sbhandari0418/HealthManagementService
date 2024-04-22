@@ -17,7 +17,7 @@ const Login = () => {
     }, [navigate]);
 
     const postLoginDetails = () => {
-        fetch("/api/hms/user/login", {
+        fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/user/login", {
             method: "POST",
             body: JSON.stringify({
                 userName,
