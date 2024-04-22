@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://zealous-mushroom-0c05d8a0f.5.azurestaticapps.net"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://zealous-mushroom-0c05d8a0f.5.azurestaticapps.net", "https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io"})
 @RequestMapping("/api/hms/fhir")
 public class FHIRController {
 

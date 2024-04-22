@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://zealous-mushroom-0c05d8a0f.5.azurestaticapps.net"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://zealous-mushroom-0c05d8a0f.5.azurestaticapps.net", "https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io"})
 @RequestMapping("/api/hms/user")
 public class UserAuthenticationController {
 
