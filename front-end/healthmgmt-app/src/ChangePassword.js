@@ -24,7 +24,7 @@ const ChangePassword = () => {
 
         // Send request to backend to change password
         try {
-            const response = await fetch("/api/hms/user/updatePassword", {
+            const response = await fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/user/updatePassword", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
