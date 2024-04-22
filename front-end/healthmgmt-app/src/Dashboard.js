@@ -27,7 +27,7 @@ class Dashboard extends Component {
             return; // Exit function early if token is not available
         }
 
-        fetch("/api/hms/fhir/patientHealthData", {
+        fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/fhir/patientHealthData", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

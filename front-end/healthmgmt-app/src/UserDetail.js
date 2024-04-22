@@ -13,7 +13,7 @@ const UserDetail = () => {
         }
         const fetchUserData = async () => {
             try {
-                const response = await fetch("/api/hms/user", {
+                const response = await fetch("https://healthmanagementapi.orangewave-663720c0.eastus.azurecontainerapps.io/api/hms/user", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}` // Attach token to Authorization header
